@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EditSceneController">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Program.EditSceneController">
    <children>
       <SplitPane dividerPositions="0.6660482374768089" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -27,20 +25,12 @@
                            </children>
                         </AnchorPane>
                         <VBox fx:id="logoList" prefHeight="700.0" />
-                        <ButtonBar>
-                          <buttons>
+                        <AnchorPane>
                               <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#closeProgram" text="Annullér" />
                             <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#saveImage" text="Gem billede">
-                                 <opaqueInsets>
-                                    <Insets />
-                                 </opaqueInsets>
                               </Button>
                               <Button fx:id="uploadBtn" mnemonicParsing="false" onAction="#uploadLogo" text="Upload logo" />
-                          </buttons>
-                           <padding>
-                              <Insets bottom="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </ButtonBar>
+                        </AnchorPane>
                      </children>
                   </VBox>
                </children>

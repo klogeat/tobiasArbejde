@@ -1,7 +1,10 @@
+package Program;
+
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -22,8 +25,6 @@ public class EditSceneController {
     private HBox currHbox;
     private int ELEMENTS_IN_LOGO_LIST = 0;
     private final int LOGO_SIZE = 100;
-
-
 
     @FXML
     public void setMainImage(Image image) {
