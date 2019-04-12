@@ -1,10 +1,14 @@
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -22,14 +26,34 @@ public class EditSceneController {
     private HBox currHbox;
     private int ELEMENTS_IN_LOGO_LIST = 0;
     private final int LOGO_SIZE = 100;
-
-
+    private final double MAIN_IMAGE_MAX_WIDTH = 718;
+    private final double MAIN_IMAGE_MAX_HEIGHT = 718;
 
     @FXML
     public void setMainImage(Image image) {
         ImageView iv = new ImageView(image);
         iv.setSmooth(true);
+        iv.setFitWidth(image.getWidth());
+        iv.setFitHeight(image.getHeight());
+
+        //Scales image to pane size if image is too large
+        scaleMainImage(iv);
+        //Scales pane to image size for better snapshots
+        leftPane.setMaxSize(iv.getFitWidth(), iv.getFitHeight());
         leftPane.getChildren().add(iv);
+    }
+
+    private void scaleMainImage(ImageView iv) {
+        if(iv.getFitHeight() > MAIN_IMAGE_MAX_HEIGHT){
+            double scaleFactor = MAIN_IMAGE_MAX_HEIGHT / iv.getFitHeight();
+            iv.setFitHeight(MAIN_IMAGE_MAX_HEIGHT);
+            iv.setFitWidth(iv.getFitWidth() * scaleFactor);
+        }
+        if(iv.getFitWidth() > MAIN_IMAGE_MAX_WIDTH){
+            double scaleFactor = MAIN_IMAGE_MAX_WIDTH / iv.getFitWidth();
+            iv.setFitWidth(MAIN_IMAGE_MAX_WIDTH);
+            iv.setFitHeight(iv.getFitHeight() * scaleFactor);
+        }
     }
 
     @FXML
@@ -45,7 +69,16 @@ public class EditSceneController {
         iv.fitWidthProperty().bind(pane.widthProperty());
 
         DragResizerPane.makeResizable(pane);
+        makeDeletable(pane);
         leftPane.getChildren().add(pane);
+    }
+
+    private void makeDeletable(Pane pane){
+        pane.setOnMouseClicked(event -> {
+            if(event.getButton().equals(MouseButton.SECONDARY)){
+                leftPane.getChildren().remove(pane);
+            }
+        });
     }
 
     @FXML
@@ -81,7 +114,7 @@ public class EditSceneController {
         File selectedFile = fileChooser.showOpenDialog(LogoEditor.mainStage);
         if (selectedFile != null) {
             try {
-                Image img = img = new Image(selectedFile.toURI().toString());
+                Image img = new Image(selectedFile.toURI().toString());
                 addLogoToLogoList(img);
             } catch (Exception e){
                 //TODO: Her skal printes at billedet ikke var png eller jpg
@@ -91,6 +124,7 @@ public class EditSceneController {
 
     @FXML
     public void saveImage(){
+        leftPane.autosize();
         WritableImage img = leftPane.snapshot(new SnapshotParameters(), null);
         File file = new File("src\\outputImages\\savedImage.png");
         try {

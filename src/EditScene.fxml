@@ -8,15 +8,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 <AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EditSceneController">
    <children>
-      <SplitPane dividerPositions="0.6660482374768089" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.67" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="374.0" prefWidth="304.0">
+          <VBox minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0">
                <children>
-                  <AnchorPane fx:id="leftPane" layoutX="24.0" layoutY="54.0" prefHeight="374.0" prefWidth="779.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <AnchorPane fx:id="leftPane" layoutX="24.0" layoutY="54.0" prefHeight="720.0" prefWidth=  "720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
-            </AnchorPane>
+            </VBox>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="211.0">
                <children>
                   <VBox layoutX="81.0" layoutY="51.0" prefHeight="374.0" prefWidth="313.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
