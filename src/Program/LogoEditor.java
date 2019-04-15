@@ -34,8 +34,8 @@ public class LogoEditor extends Application {
         stage.show();
     }
 
-    public static void start() {
-        Application.launch();
+    public static void main(String[] args) {
+        launch(args);
     }
 
 }

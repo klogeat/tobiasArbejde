@@ -16,10 +16,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class EditSceneController {
 
@@ -31,8 +34,19 @@ public class EditSceneController {
     private final double MAIN_IMAGE_MAX_WIDTH = 718;
     private final double MAIN_IMAGE_MAX_HEIGHT = 718;
 
-    @FXML
-    public void setMainImage(Image image) {
+    private Runnable runnable;
+    private String destination;
+    private String pathForLastGeneratedPicture;
+
+    public void setCacheDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public void setOnSave(Runnable runnable) {
+        this.runnable = runnable;
+    }
+
+    @FXML public void setMainImage(Image image) {
         ImageView iv = new ImageView(image);
         iv.setSmooth(true);
         iv.setFitWidth(image.getWidth());
@@ -104,7 +118,7 @@ public class EditSceneController {
 
     @FXML
     public void closeProgram(){
-        LogoEditor.mainStage.close();
+        ((Stage) leftPane.getScene().getWindow()).close();
     }
 
     @FXML
@@ -125,15 +139,24 @@ public class EditSceneController {
     }
 
     @FXML
-    public void saveImage(){
+    public void saveImage() {
+
+        if(destination == null) throw new IllegalArgumentException("Please set cache destination for created images");
+
         leftPane.autosize();
         WritableImage img = leftPane.snapshot(new SnapshotParameters(), null);
-        File file = new File("src/outputImages/savedImage.png");
+        // To make the generated filename unique we use current time
+        File file = new File(destination + "/" + "savedImage" + getCurrentTimeStamp() + ".png");
         try {
             ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", file);
+            this.pathForLastGeneratedPicture = file.getPath();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private long getCurrentTimeStamp() {
+        return Calendar.getInstance(TimeZone.getTimeZone("GMT+1")).getTime().getTime();
     }
 
     //scales a pane that wraps an image to
@@ -145,5 +168,9 @@ public class EditSceneController {
         pane.setMaxWidth(newWidth);
         pane.setMinHeight(prevHeight * (newWidth / prevWidth));
         pane.setMaxHeight(prevHeight * (newWidth / prevWidth));
+    }
+
+    public String getPathForLastGeneratedPicture() {
+        return pathForLastGeneratedPicture;
     }
 }
