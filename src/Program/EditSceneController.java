@@ -1,3 +1,5 @@
+package Program;
+
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -126,7 +128,7 @@ public class EditSceneController {
     public void saveImage(){
         leftPane.autosize();
         WritableImage img = leftPane.snapshot(new SnapshotParameters(), null);
-        File file = new File("src\\outputImages\\savedImage.png");
+        File file = new File("src/outputImages/savedImage.png");
         try {
             ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", file);
         } catch (IOException e) {
