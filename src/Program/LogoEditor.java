@@ -21,7 +21,7 @@ public class LogoEditor extends Application {
         stage.setTitle("Tilføj logo'er");
 
         EditSceneController controller = loader.getController();
-        controller.setMainImage(new Image("outputImages/114041-271infrafront-p.png"));
+        controller.setMainImage(new Image("testImages/114041-271infrafront-p.png"));
         controller.addLogoToLogoList(new Image("outputImages/instaLogo.png"));
         controller.addLogoToLogoList(new Image("outputImages/logo.png"));
         controller.addLogoToLogoList(new Image("outputImages/logo.png"));
@@ -30,6 +30,8 @@ public class LogoEditor extends Application {
         controller.addLogoToLogoList(new Image("outputImages/logo.png"));
         controller.addLogoToLogoList(new Image("outputImages/logo.png"));
         controller.addLogoToLogoList(new Image("outputImages/logo.png"));
+
+        controller.setCacheDestination("src/outputImages/");
 
         stage.show();
     }

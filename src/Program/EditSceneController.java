@@ -1,16 +1,13 @@
 package Program;
 
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -34,7 +31,8 @@ public class EditSceneController {
     private final double MAIN_IMAGE_MAX_WIDTH = 718;
     private final double MAIN_IMAGE_MAX_HEIGHT = 718;
 
-    private Runnable runnable;
+    private ImageView primaryImage;
+
     private String destination;
     private String pathForLastGeneratedPicture;
 
@@ -42,21 +40,17 @@ public class EditSceneController {
         this.destination = destination;
     }
 
-    public void setOnSave(Runnable runnable) {
-        this.runnable = runnable;
-    }
-
     @FXML public void setMainImage(Image image) {
-        ImageView iv = new ImageView(image);
-        iv.setSmooth(true);
-        iv.setFitWidth(image.getWidth());
-        iv.setFitHeight(image.getHeight());
+        this.primaryImage = new ImageView(image);
+        primaryImage.setSmooth(true);
+        primaryImage.setFitWidth(image.getWidth());
+        primaryImage.setFitHeight(image.getHeight());
 
         //Scales image to pane size if image is too large
-        scaleMainImage(iv);
+        scaleMainImage(primaryImage);
         //Scales pane to image size for better snapshots
-        leftPane.setMaxSize(iv.getFitWidth(), iv.getFitHeight());
-        leftPane.getChildren().add(iv);
+        leftPane.setMaxSize(primaryImage.getFitWidth(), primaryImage.getFitHeight());
+        leftPane.getChildren().add(primaryImage);
     }
 
     private void scaleMainImage(ImageView iv) {
@@ -74,6 +68,7 @@ public class EditSceneController {
 
     @FXML
     private void addLogoToMainImage(Image logo) {
+
         ImageView iv = new ImageView(logo);
         iv.setSmooth(true); // utilizes a slower but better image quality algorithm when resizing images
 
@@ -145,14 +140,24 @@ public class EditSceneController {
 
         leftPane.autosize();
         WritableImage img = leftPane.snapshot(new SnapshotParameters(), null);
-        // To make the generated filename unique we use current time
-        File file = new File(destination + "/" + "savedImage" + getCurrentTimeStamp() + ".png");
+        // We place the image in a unique folder (timestamp)
+        String filename = getFilename(primaryImage);
+        String timestamp = getCurrentTimeStamp() + "";
+        File file = new File(destination + "/" + timestamp + "/" + filename + ".png");
         try {
+            // Clumsy but will have to do for now
+            // We are creating the directory for the image
+            new File(destination + "/" + timestamp).mkdir();
             ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", file);
             this.pathForLastGeneratedPicture = file.getPath();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getFilename(ImageView imageView) {
+        String url = imageView.getImage().getUrl();
+        return url.substring(url.lastIndexOf("/"), url.lastIndexOf("."));
     }
 
     private long getCurrentTimeStamp() {
