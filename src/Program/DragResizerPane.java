@@ -1,7 +1,6 @@
 package Program;
 
 import javafx.scene.Cursor;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
@@ -19,6 +18,7 @@ public class DragResizerPane {
     private final int SOUTH = 1;
     private final int EAST = 2;
     private final int SOUTHEAST = 3;
+    private final int NORTHMIDDLE = 4;
 
     private DragResizerPane(Pane inputPane) {
         pane = inputPane;
@@ -44,12 +44,16 @@ public class DragResizerPane {
             pane.setCursor(Cursor.S_RESIZE);
         } else if (isInDraggableZoneE(event) || dragging == EAST) {
             pane.setCursor(Cursor.E_RESIZE);
+        } else if (isInDraggableZoneNM(event) || dragging == NORTHMIDDLE) {
+            pane.setCursor(Cursor.OPEN_HAND);
         } else {
-            pane.setCursor(Cursor.DEFAULT);
+            pane.setCursor(Cursor.MOVE);
         }
     }
 
     private boolean isInDraggableZoneSE(MouseEvent event) { return (event.getX() > (pane.getMinWidth() - RESIZE_MARGIN)) && (event.getY() > (pane.getMinHeight() - RESIZE_MARGIN)); }
+
+    private boolean isInDraggableZoneNM(MouseEvent event) { return (event.getX() <= middleX() *1.3 && event.getX() >= middleX() * 0.7  && event.getY() < middleY() * 0.6); }
 
     private boolean isInDraggableZoneS(MouseEvent event) { return event.getY() > (pane.getMinHeight() - RESIZE_MARGIN); }
 
@@ -63,6 +67,8 @@ public class DragResizerPane {
             dragSouth(event);
         } else if (dragging == EAST) {
             dragEast(event);
+        } else if (dragging == NORTHMIDDLE){
+            rotate(event);
         }
         //if we are drag and dropping the pane
         else {
@@ -75,6 +81,40 @@ public class DragResizerPane {
             ((Pane)(event.getSource())).setTranslateY(newTranslateY);
         }
     }
+
+    private void rotate(MouseEvent event){
+        pane.setRotate(0);
+        double rotateAmount = calculateAngle(event);
+        pane.setRotate(rotateAmount);
+    }
+    private double calculateAngle(MouseEvent event) {
+        double x1 = pane.getTranslateX() + middleX();
+        double y1 = pane.getTranslateY() + middleY();
+        double x2 = event.getSceneX();
+        double y2 = event.getSceneY();
+        double side1 = Math.abs(x2 - x1);
+        double side2 = Math.abs(y2 - y1);
+        double hypotenuse = Math.sqrt(side1 * side1 + side2 * side2);
+        double angle = Math.asin(side2 / hypotenuse) * (180 / Math.PI);
+        if (x2 >= x1 && y2 <= y1) {
+            return 90 - angle;
+        } else if (x2 >= x1 && y2 >= y1){
+            return angle + 90;
+        } else if (x2 <= x1 && y2 >= y1){
+            return 270 - angle;
+        } else {
+            return angle + 270;
+        }
+    }
+
+    private double middleX(){
+        return pane.getWidth()/2;
+    }
+
+    private double middleY(){
+        return pane.getHeight()/2;
+    }
+
 
     private void dragSouth(MouseEvent event){
         double prevHeight = pane.getMinHeight();
@@ -106,6 +146,9 @@ public class DragResizerPane {
             dragging = EAST;
         } else if (isInDraggableZoneS(event)) {
             dragging = SOUTH;
+        } else if (isInDraggableZoneNM(event)){
+            dragging = NORTHMIDDLE;
+            pane.setCursor(Cursor.CLOSED_HAND);
         }
         //if we are trying to drag and drop
         else {
