@@ -22,8 +22,8 @@ import java.io.IOException;
 public class EditSceneController {
 
     @FXML private AnchorPane leftPane;
-    @FXML private VBox logoList;
-    private HBox currHbox;
+    @FXML private HBox logoList;
+    private VBox currHbox;
     private int ELEMENTS_IN_LOGO_LIST = 0;
     private final int LOGO_SIZE = 100;
     private final double MAIN_IMAGE_MAX_WIDTH = 718;
@@ -92,8 +92,8 @@ public class EditSceneController {
         pane.setPadding(new Insets(5));
         pane.setOnMousePressed(event -> addLogoToMainImage(logo));
 
-        if (ELEMENTS_IN_LOGO_LIST % 3 == 0) {
-            currHbox = new HBox();
+        if (ELEMENTS_IN_LOGO_LIST % 6 == 0) {
+            currHbox = new VBox();
             logoList.getChildren().add(currHbox);
         }
         currHbox.getChildren().add(pane);

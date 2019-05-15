@@ -10,6 +10,7 @@
 
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.HBox?>
 <AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EditSceneController">
    <children>
       <SplitPane dividerPositions="0.67" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -28,7 +29,7 @@
                               <Text layoutX="14.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Firma logo'er" wrappingWidth="105.13671875" />
                            </children>
                         </AnchorPane>
-                        <VBox fx:id="logoList" prefHeight="700.0" />
+                        <HBox fx:id="logoList" prefHeight="700.0" />
                         <ButtonBar>
                           <buttons>
                               <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#closeProgram" text="Annullér" />
