@@ -8,6 +8,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class PictureEditor {
 
@@ -15,7 +16,7 @@ public class PictureEditor {
     private FXMLLoader loader;
     private EditSceneController controller;
 
-    public PictureEditor(Image primary, Image ... logoPictures) throws IOException {
+    public PictureEditor(Image primary, List<Image> logoPictures) throws IOException {
         this.stage = new Stage();
         this.loader = new FXMLLoader(getClass().getResource("/Program/EditScene.fxml"));
         Parent root = loader.load();
