@@ -1,5 +1,7 @@
 package Program;
 
+import Program.DragResizerPane;
+import Program.LogoEditor;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
