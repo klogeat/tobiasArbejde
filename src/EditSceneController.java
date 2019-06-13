@@ -1,6 +1,7 @@
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
@@ -124,11 +125,22 @@ public class EditSceneController {
 
     @FXML
     public void saveImage(){
+        final int DPI_SCALE = 4;
         leftPane.autosize();
-        WritableImage img = leftPane.snapshot(new SnapshotParameters(), null);
-        File file = new File("src\\outputImages\\savedImage.png");
+
+        Bounds bounds = leftPane.getLayoutBounds();
+        WritableImage image = new WritableImage(
+                (int) Math.round(bounds.getWidth() * DPI_SCALE),
+                (int) Math.round(bounds.getHeight() * DPI_SCALE));
+
+        SnapshotParameters spa = new SnapshotParameters();
+        spa.setTransform(javafx.scene.transform.Transform.scale(DPI_SCALE, DPI_SCALE));
+
+        image = leftPane.snapshot(spa, image);
+
+        File saveDestination = new File("src\\outputImages\\savedImage.png");
         try {
-            ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", file);
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", saveDestination);
         } catch (IOException e) {
             e.printStackTrace();
         }
