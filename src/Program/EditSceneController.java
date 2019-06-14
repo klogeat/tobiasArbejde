@@ -4,6 +4,7 @@ import Program.DragResizerPane;
 import Program.LogoEditor;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
@@ -140,8 +141,17 @@ public class EditSceneController {
 
         if(destination == null) throw new IllegalArgumentException("Please set cache destination for created images");
 
+        final int DPI_SCALE = 4;
         leftPane.autosize();
-        WritableImage img = leftPane.snapshot(new SnapshotParameters(), null);
+
+        Bounds bounds = leftPane.getLayoutBounds();
+        WritableImage image = new WritableImage(
+                (int) Math.round(bounds.getWidth() * DPI_SCALE),
+                (int) Math.round(bounds.getHeight() * DPI_SCALE));
+
+        SnapshotParameters spa = new SnapshotParameters();
+        spa.setTransform(javafx.scene.transform.Transform.scale(DPI_SCALE, DPI_SCALE));
+        image = leftPane.snapshot(spa, image);
         // We place the image in a unique folder (timestamp)
         String filename = getFilename(primaryImage);
         String timestamp = getCurrentTimeStamp() + "";
@@ -150,7 +160,7 @@ public class EditSceneController {
             // Clumsy but will have to do for now
             // We are creating the directory for the image
             new File(destination + "/" + timestamp).mkdir();
-            ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", file);
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
             this.pathForLastGeneratedPicture = file.getPath();
         } catch (IOException e) {
             e.printStackTrace();
