@@ -1,9 +1,13 @@
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -23,9 +27,7 @@ import java.io.IOException;
 public class EditSceneController {
 
     @FXML private AnchorPane leftPane;
-    @FXML private HBox logoList;
-    private VBox currHbox;
-    private int ELEMENTS_IN_LOGO_LIST = 0;
+    @FXML private VBox logoList = new VBox();
     private final int LOGO_SIZE = 100;
     private final double MAIN_IMAGE_MAX_WIDTH = 718;
     private final double MAIN_IMAGE_MAX_HEIGHT = 718;
@@ -93,12 +95,7 @@ public class EditSceneController {
         pane.setPadding(new Insets(5));
         pane.setOnMousePressed(event -> addLogoToMainImage(logo));
 
-        if (ELEMENTS_IN_LOGO_LIST % 6 == 0) {
-            currHbox = new VBox();
-            logoList.getChildren().add(currHbox);
-        }
-        currHbox.getChildren().add(pane);
-        ELEMENTS_IN_LOGO_LIST += 1;
+        logoList.getChildren().add(pane);
     }
 
     @FXML
