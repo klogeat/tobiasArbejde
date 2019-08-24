@@ -24,7 +24,7 @@
                      <children>
                         <AnchorPane>
                            <children>
-                              <Text layoutX="14.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Firma logo'er" wrappingWidth="105.13671875" />
+                              <Text layoutY="15.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Firma logo'er" wrappingWidth="105.13671875" />
                            </children>
                         </AnchorPane>
                         <ScrollPane>
